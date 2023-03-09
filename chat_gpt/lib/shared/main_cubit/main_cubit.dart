@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:chat_gpt/shared/main_cubit/main_states.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 
@@ -36,7 +37,7 @@ class MainCubit extends Cubit<MainState> {
   }
 
   var scodexAnswer = {};
-  scodexAI({prompt = 'Explain and analysis fight club'}) async {
+  scodexAI({prompt = 'Explain and analysis fight club', context}) async {
     scodexAnswer = {};
     emit(LoadingAskMeAnythingState());
     var url = Uri.parse('https://scodex-api.p.rapidapi.com/');
@@ -57,6 +58,24 @@ class MainCubit extends Cubit<MainState> {
       // print(scodexAnswer);
 
       emit(SuccessAskMeAnythingState());
+    } else if (response.statusCode == 429) {
+      showDialog(
+        context: context,
+        builder: (context) {
+          return AlertDialog(
+            title: Text(
+              'You have exceeded the rate limit per hour for your plan, BASIC, by the API provider, Please try again later.',
+              style: TextStyle(
+                color: Colors.red[300],
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            backgroundColor: const Color.fromARGB(255, 52, 53, 65),
+          );
+        },
+      );
+      emit(ErrorAskMeAnythingState());
     } else {
       emit(ErrorAskMeAnythingState());
       print('Failed to post data. Error code: ${response.statusCode}');

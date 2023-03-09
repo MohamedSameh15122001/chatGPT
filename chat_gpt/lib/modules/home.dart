@@ -123,7 +123,7 @@ class Home extends StatelessWidget {
               } else {
                 internetConection(context);
                 if (isNetworkConnection) {
-                  await ref.scodexAI(prompt: controller.text);
+                  await ref.scodexAI(prompt: controller.text, context: context);
                   if (ref.scodexAnswer['bot'].isNotEmpty &&
                       ref.scodexAnswer['bot'] != null) {
                     ref.isAnswerArabicF(ref.scodexAnswer['bot']);
