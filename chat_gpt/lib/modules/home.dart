@@ -160,7 +160,7 @@ class Home extends StatelessWidget {
                 ),
                 child: const Center(
                   child: Text(
-                    'Ask',
+                    'ASK',
                     style: TextStyle(
                       color: Color.fromARGB(255, 209, 213, 211),
                       fontSize: 18.0,
